@@ -2,14 +2,10 @@ package stepDefinitions;
 
 import static io.restassured.RestAssured.given;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.FileNotFoundException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
-import io.restassured.RestAssured;
-import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
@@ -17,8 +13,7 @@ import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import static org.junit.Assert.*;
-import pojo.AddPlace;
-import pojo.Location;
+
 import resources.TestDataBuild;
 import resources.Utils;
 
@@ -29,11 +24,9 @@ public class StepDefinition extends Utils {
 	TestDataBuild data = new TestDataBuild();
 	
 	@Given("Add Place Payload")
-	public void add_Place_Payload() {
+	public void add_Place_Payload() throws FileNotFoundException {
 	
-		resSpec = new ResponseSpecBuilder()
-			.expectStatusCode(200)
-			.expectContentType(ContentType.JSON).build();
+	
 			
 		reqSpec = given()
 			.spec(requestSpecification())
@@ -44,6 +37,11 @@ public class StepDefinition extends Utils {
 
 	@When("user calls {string} with Post http request")
 	public void user_calls_with_Post_http_request(String string) {
+		resSpec = new ResponseSpecBuilder()
+				.expectStatusCode(200)
+				.expectContentType(ContentType.JSON).build();
+		
+		
 		response = reqSpec.when()
 				.post("/maps/api/place/add/json")
 			.then()
