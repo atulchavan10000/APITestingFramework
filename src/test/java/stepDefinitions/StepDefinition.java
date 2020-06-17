@@ -19,35 +19,20 @@ import io.restassured.specification.ResponseSpecification;
 import static org.junit.Assert.*;
 import pojo.AddPlace;
 import pojo.Location;
+import resources.TestDataBuild;
 
 public class StepDefinition {
 	RequestSpecification reqSpec;
 	ResponseSpecification resSpec;
 	Response response;
+	TestDataBuild data = new TestDataBuild();
 	
 	@Given("Add Place Payload")
 	public void add_Place_Payload() {
 	    // Write code here that turns the phrase above into concrete actions
 		RestAssured.baseURI = "https://rahulshettyacademy.com";
 		
-		AddPlace addPlace = new AddPlace();
-		addPlace.setAccuracy(50);
-		addPlace.setAddress("29, side layout, cohen 09");
-		addPlace.setLanguage("French-IN");
-		addPlace.setPhone_number("(+91) 983 893 3937");
-		addPlace.setWebsite("https://www.corptut.com");
-		addPlace.setName("VedensionTech pvt ltd");
-		
-		List<String> typesList = new ArrayList<String>();
-		typesList.add("shoe park");
-		typesList.add("amanora park town");
-		typesList.add("Hinjewadi IT Park");
-		addPlace.setTypes(typesList);
-		
-		Location locObject = new Location();
-		locObject.setLat(-38.383494);
-		locObject.setLng(33.427362);
-		addPlace.setLocation(locObject);
+
 		
 		
 		RequestSpecification requestSpecificationToMerge =  new RequestSpecBuilder()
@@ -63,7 +48,7 @@ public class StepDefinition {
 			
 		reqSpec = given()
 			.spec(requestSpecificationToMerge)
-			.body(addPlace);
+			.body(data.addPlacePayLoad());
 	}
 
 
