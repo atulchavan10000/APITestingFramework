@@ -20,8 +20,9 @@ import static org.junit.Assert.*;
 import pojo.AddPlace;
 import pojo.Location;
 import resources.TestDataBuild;
+import resources.Utils;
 
-public class StepDefinition {
+public class StepDefinition extends Utils {
 	RequestSpecification reqSpec;
 	ResponseSpecification resSpec;
 	Response response;
@@ -29,25 +30,13 @@ public class StepDefinition {
 	
 	@Given("Add Place Payload")
 	public void add_Place_Payload() {
-	    // Write code here that turns the phrase above into concrete actions
-		RestAssured.baseURI = "https://rahulshettyacademy.com";
-		
-
-		
-		
-		RequestSpecification requestSpecificationToMerge =  new RequestSpecBuilder()
-			.setBaseUri("https://rahulshettyacademy.com")
-			.addQueryParam("key", "qaclick123")
-			.setContentType(ContentType.JSON)
-			.build();
-		
-		
+	
 		resSpec = new ResponseSpecBuilder()
 			.expectStatusCode(200)
 			.expectContentType(ContentType.JSON).build();
 			
 		reqSpec = given()
-			.spec(requestSpecificationToMerge)
+			.spec(requestSpecification())
 			.body(data.addPlacePayLoad());
 	}
 
