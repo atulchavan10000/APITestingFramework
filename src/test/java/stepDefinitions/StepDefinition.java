@@ -3,6 +3,8 @@ package stepDefinitions;
 import static io.restassured.RestAssured.given;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -23,14 +25,14 @@ public class StepDefinition extends Utils {
 	Response response;
 	TestDataBuild data = new TestDataBuild();
 	
-	@Given("Add Place Payload")
-	public void add_Place_Payload() throws FileNotFoundException {
 	
-	
+
+	@Given("Add Place Payload with {string} {string} {string}")
+	public void add_Place_Payload_with(String name, String language, String address) throws IOException {
 			
 		reqSpec = given()
 			.spec(requestSpecification())
-			.body(data.addPlacePayLoad());
+			.body(data.addPlacePayLoad(name, language, address));
 	}
 
 
