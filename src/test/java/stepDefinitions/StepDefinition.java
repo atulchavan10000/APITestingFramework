@@ -38,24 +38,23 @@ public class StepDefinition extends Utils {
 
 
 
-	@When("user calls {string} with Post http request")
-	public void user_calls_with_Post_http_request(String resource) {
+	@When("user calls {string} with {string} http request")
+	public void user_calls_with_Post_http_request(String resource, String httpMethod) {
 		/** APIResources constructor will be loaded with value of String resource
 		*String resource will receive a  string from a feature file
 		**/
 		APIResources resourceAPI = APIResources.valueOf(resource);
-		String resourceToBeProvidedInRequests = resourceAPI.getResource();
 		
 		resSpec = new ResponseSpecBuilder()
 				.expectStatusCode(200)
 				.expectContentType(ContentType.JSON).build();
 		
-		
-		response = reqSpec.when()
-				.post(resourceToBeProvidedInRequests)
-			.then()
-				.spec(resSpec)
-				.extract().response();
+		if(httpMethod.equalsIgnoreCase("POST")) {
+			response = reqSpec.when().post(resourceAPI.getResource());		
+		}else if(httpMethod.equalsIgnoreCase("GET")){
+			response = reqSpec.when().get(resourceAPI.getResource());		
+		}
+
 	}
 	@Then("the API call is success with status code {int}")
 	public void the_API_call_is_success_with_status_code(Integer int1) {
