@@ -16,6 +16,7 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import static org.junit.Assert.*;
 
+import resources.APIResources;
 import resources.TestDataBuild;
 import resources.Utils;
 
@@ -38,14 +39,20 @@ public class StepDefinition extends Utils {
 
 
 	@When("user calls {string} with Post http request")
-	public void user_calls_with_Post_http_request(String string) {
+	public void user_calls_with_Post_http_request(String resource) {
+		/** APIResources constructor will be loaded with value of String resource
+		*String resource will receive a  string from a feature file
+		**/
+		APIResources resourceAPI = APIResources.valueOf(resource);
+		String resourceToBeProvidedInRequests = resourceAPI.getResource();
+		
 		resSpec = new ResponseSpecBuilder()
 				.expectStatusCode(200)
 				.expectContentType(ContentType.JSON).build();
 		
 		
 		response = reqSpec.when()
-				.post("/maps/api/place/add/json")
+				.post(resourceToBeProvidedInRequests)
 			.then()
 				.spec(resSpec)
 				.extract().response();
