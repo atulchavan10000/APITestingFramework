@@ -64,15 +64,17 @@ public class StepDefinition extends Utils {
 	}
 	
 	@Then("verify place_Id created maps to {string} using {string}")
-	public void verify_place_Id_created_maps_to_using(String name, String resource) throws IOException {
+	public void verify_place_Id_created_maps_to_using(String expectedName, String resource) throws IOException {
 		// prepare req spec
 		String place_Id = getJsonPath(response, "place_id");
 		reqSpec = given()
 				.spec(requestSpecification())
-				.queryParam("place_Id", place_Id);
+				.queryParam("place_id", place_Id);
 		
 		// get API call
-	
+		user_calls_with_http_request(resource, "GET");
+		String actualName = getJsonPath(response, "name");
+		assertEquals(actualName, expectedName);
 		
 	}
 
