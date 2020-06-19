@@ -1,8 +1,6 @@
 package stepDefinitions;
 
 import static io.restassured.RestAssured.given;
-
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import io.cucumber.java.en.Given;
@@ -10,7 +8,6 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -25,8 +22,7 @@ public class StepDefinition extends Utils {
 	ResponseSpecification resSpec;
 	Response response;
 	TestDataBuild data = new TestDataBuild();
-	
-	
+
 
 	@Given("Add Place Payload with {string} {string} {string}")
 	public void add_Place_Payload_with(String name, String language, String address) throws IOException {
@@ -39,7 +35,7 @@ public class StepDefinition extends Utils {
 
 
 	@When("user calls {string} with {string} http request")
-	public void user_calls_with_Post_http_request(String resource, String httpMethod) {
+	public void user_calls_with_http_request(String resource, String httpMethod) {
 		/** APIResources constructor will be loaded with value of String resource
 		*String resource will receive a  string from a feature file
 		**/
@@ -64,10 +60,24 @@ public class StepDefinition extends Utils {
 	
 	@Then("{string} in response body is {string}")
 	public void in_response_body_is(String keyValue, String expectedValue) {
-		String resp= response.asString();
-		JsonPath js = new JsonPath(resp);
-		assertEquals(js.get(keyValue).toString(), expectedValue);
+		assertEquals(getJsonPath(response, keyValue), expectedValue);
 	}
+	
+	@Then("verify place_Id created maps to {string} using {string}")
+	public void verify_place_Id_created_maps_to_using(String name, String resource) throws IOException {
+		// prepare req spec
+		String place_Id = getJsonPath(response, "place_id");
+		reqSpec = given()
+				.spec(requestSpecification())
+				.queryParam("place_Id", place_Id);
+		
+		// get API call
+	
+		
+	}
+
+
+
 	
 
 }
