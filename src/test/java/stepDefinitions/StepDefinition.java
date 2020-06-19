@@ -22,7 +22,9 @@ public class StepDefinition extends Utils {
 	ResponseSpecification resSpec;
 	Response response;
 	TestDataBuild data = new TestDataBuild();
-
+	// place_id needs to be static because it will be used in two different scenarios
+	// first scenario will get the place_id, another will use place_id to delete place
+	static String place_id;
 
 	@Given("Add Place Payload with {string} {string} {string}")
 	public void add_Place_Payload_with(String name, String language, String address) throws IOException {
@@ -63,23 +65,36 @@ public class StepDefinition extends Utils {
 		assertEquals(getJsonPath(response, keyValue), expectedValue);
 	}
 	
-	@Then("verify place_Id created maps to {string} using {string}")
-	public void verify_place_Id_created_maps_to_using(String expectedName, String resource) throws IOException {
+	@Then("verify place_id created maps to {string} using {string}")
+	public void verify_place_id_created_maps_to_using(String expectedName, String resource) throws IOException {
 		// prepare req spec
-		String place_Id = getJsonPath(response, "place_id");
+		place_id = getJsonPath(response, "place_id");
 		reqSpec = given()
 				.spec(requestSpecification())
-				.queryParam("place_id", place_Id);
+				.queryParam("place_id", place_id);
 		
 		// get API call
 		user_calls_with_http_request(resource, "GET");
 		String actualName = getJsonPath(response, "name");
-		assertEquals(actualName, expectedName);
-		
+		assertEquals(actualName, expectedName);	
 	}
 
-
-
+	@Given("DeletePlace Payload")
+	public void deleteplace_Payload() throws IOException {
+		reqSpec = given()
+			.spec(requestSpecification())
+			.body(data.deletePlacePayload(place_id));
+	}
 	
 
 }
+
+
+
+
+
+
+
+
+
+
