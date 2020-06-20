@@ -9,7 +9,8 @@ import io.cucumber.junit.CucumberOptions;
 @CucumberOptions(
 		features= "src/test/java/features", 
 		glue="stepDefinitions",
-		tags= "@addPlace"
+		plugin="json:target/jsonReports/cucumber-report.json",
+		tags="@addPlace"
 	)
 public class TestRunner {
 
