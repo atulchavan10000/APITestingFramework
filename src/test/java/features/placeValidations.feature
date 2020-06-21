@@ -12,7 +12,7 @@ Scenario Outline: Verify if place is being successfully added using AddPlaceAPI
 Examples:
 	| name | language | address |
 	| AAhouse | English | World cross center | 
-	| BBHouse | Spanish | Sea cross center |
+	| BBHouseaa | Spanish | Sea cross center |
 	
 @DeletePlace
 Scenario: Verify if Delete Place functionality is working
