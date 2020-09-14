@@ -38,11 +38,16 @@ public class Utils {
 		return requestSpecificationToMerge;	
 	}
 	
+	Properties prop;
+	FileInputStream fis;
 	public String getGlobalValue(String key) throws IOException {
-		Properties prop = new Properties();
-		FileInputStream fis = new FileInputStream(".\\src\\test\\java\\resources\\global.properties");
-		prop.load(fis);
-		return prop.getProperty(key);
+		if(prop == null && fis == null) {
+			prop = new Properties();
+			fis = new FileInputStream(".\\src\\test\\java\\resources\\global.properties");
+			prop.load(fis);
+			return prop.getProperty(key);		
+		}
+		return prop.getProperty(key);	
 	}
 	
 	public String getJsonPath(Response response, String key) {

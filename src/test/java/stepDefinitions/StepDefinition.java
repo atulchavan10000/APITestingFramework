@@ -31,6 +31,7 @@ public class StepDefinition extends Utils {
 			
 		reqSpec = given()
 			.spec(requestSpecification())
+			.log().all()
 			.body(data.addPlacePayLoad(name, language, address));
 	}
 
